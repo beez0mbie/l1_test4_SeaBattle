@@ -1,8 +1,5 @@
 import java.util.Scanner;
 
-/**
- * Created by a.shmelkov on 10.10.2016.
- */
 public class SeaBattle {
     public static void main(String[] args) {
         Field field = new Field(); // дали право работать со всеми не статическими методами
