@@ -1,8 +1,5 @@
 import java.util.Random;
 
-/**
- * Created by a.shmelkov on 10.11.2016.
- */
 public class Field {
     public static final int SIZE = 5; // final -- константа
     public static final int SHIPS_AMOUNT = 2;
