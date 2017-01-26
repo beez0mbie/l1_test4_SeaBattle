@@ -1,8 +1,5 @@
 import java.util.Random;
 
-/**
- * Created by a.shmelkov on 10.11.2016.
- */
 public class Ship {
     //    int[] position; // выделяем память для массива
     int[] position;
