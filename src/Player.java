@@ -1,8 +1,5 @@
 import java.util.Scanner;
 
-/**
- * Created by a.shmelkov on 10.11.2016.
- */
 public class Player {
     int shoot;
 
