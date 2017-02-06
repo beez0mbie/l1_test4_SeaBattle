@@ -1,19 +1,11 @@
-import java.util.Random;
-
-/**
- * Created by a.shmelkov on 10.11.2016.
- */
 public class Field {
     public static final int SIZE = 5; // final -- константа
-    public static final int SHIPS_AMOUNT = 2;
+    public static final int SHIPS_AMOUNT = 3;
     char[][] cells = new char[SIZE][SIZE]; //из локальной(main) мы перенесли в поля класса
-    Random random = new Random();
     Ship[] ships = new Ship[SHIPS_AMOUNT];
-//    int[][] ship.position = new int[2][];// = ship.initShip(); //= new int[ship.position.length];
-    int[] randomLine;
     int hit = 0;
-
-
+    boolean isIntersect;
+    boolean isIntersectTwoShips;
 
     void init() {
         for (int i = 0; i < cells.length; i++) {
@@ -23,29 +15,54 @@ public class Field {
         }
     }
 
+    public void initShips() {
+        for (int i = 0; i < SHIPS_AMOUNT; i++) {
+            Ship tempShip = new Ship();
+            // проверка
+            do {
+                isIntersect = false;
+                tempShip.initShip();
+                for (int j = 0; j < i; j++) {
+                    if (isIntersectTwoShips(tempShip)) {
+                        isIntersect = true;
+                    }
+                }
+            } while (isIntersect);
+            tempShip.serialNumber = i;
+            drawShip(tempShip);
+            ships[i] = tempShip;
+            System.out.println(ships[i].coordinats[0] + " " + ships[i].coordinats[1] + " " + ships[i].isGorizontal() + " " + ships[i].size);
+        }
+    }
+
     void drawShip(Ship ship) {
-        randomLine[ship.serialNumber] = random.nextInt(SIZE);
-//        ship[0].initShip();
-//        ship[1].initShip();
-//        ship.isGorizontal();
-//        shipPosition[1] = ship.initShip();
-//        System.out.println(shipPosition[1]);
-//        int shipPosition = 4; // локальную переменную из других методов не видно
-//        cells[shipPosition][shipPosition] = 'X';
-//        for (int i = 0; i < shipPosition.length; i++) {
-//            cells[randomLine][shipPosition[i]] = 'X';
-//        }
         if (ship.isGorizontal) {
             for (int i : ship.position) {
-                cells[randomLine[ship.serialNumber]][i] = 'X';  //появляется горизонтальный 3х палубный корабль на рандомной линии поля
+                cells[ship.randomLine][i] = 'X';
             }
-//            gorizontalOrNot = true;
         } else {
             for (int i : ship.position) {
-                cells[i][randomLine[ship.serialNumber]] = 'X';  //появляется вертикальный 3х палубный корабль на рандомном слобце поля
+                cells[i][ship.randomLine] = 'X';
             }
-//            gorizontalOrNot = false;
         }
+    }
+
+    boolean isIntersectTwoShips(Ship ship) {
+        isIntersectTwoShips = false;
+        if (ship.isGorizontal) {
+            for (int i : ship.position) {
+                if (cells[ship.randomLine][i] == 'X') {
+                    isIntersectTwoShips = true;
+                }
+            }
+        } else {
+            for (int i : ship.position) {
+                if (cells[i][ship.randomLine] == 'X') {
+                    isIntersectTwoShips = true;
+                }
+            }
+        }
+        return isIntersectTwoShips;
     }
 
     void showField() {
@@ -58,7 +75,7 @@ public class Field {
         }
     }
 
-    void doShoot(int shoot, int shoot2) {
+    void doShoot(int shoot2, int shoot) { //вначале перепутал вертикаль с горизонталью, поэтому так
         switch (cells[shoot][shoot2]) {
             case '~':
                 System.out.println("Промах");
@@ -83,64 +100,14 @@ public class Field {
     }
 
     boolean isNotGameOver() {
-//        boolean q;
-//        q = false;
-//        if (ships[0].isGorizontal) {
-//            for (int i : ships[0].position) {
-//                if (cells[randomLine[ship.serialNumber]][i] == 'X') {
-//                    return true;
-//                }
-//            }
-//            return false;
-//        } else {
-//            for (int i : ships[0].position) {
-//                if (cells[i][randomLine[ship.serialNumber]] == 'X') {
-//                    return true;
-//                }
-//            }
-//            return false;
-//        }
-//        return cells[shipPosition[1]][shipPosition[1]] == 'X';
-        for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < cells.length; j++) {
-                if (cells[i][j] == 'X') {
-                    return true;
-                } else {
-                    return false;
+        boolean isNotGameOver = false;
+        for (char[] g1 : cells) {
+            for (char g2 : g1) {
+                if (g2 == 'X') {
+                    isNotGameOver = true;
                 }
             }
         }
-    }
-
-
-    boolean isIntersectTwoShips(Ship ship1, Ship ship2) {
-        if (ship2.position[0] + ship2.size < ship1.position[0]) {
-            return false;
-        }
-        if (ship1.position[0] + ship1.size < ship2.position[0]) {
-            return false;
-        }
-        return true;
-    }
-
-    public void initShips() {
-        for (int i = 0; i < SHIPS_AMOUNT; i++) {
-            Ship tempShip = new Ship();
-             // проверка
-            boolean isIntersect;
-            do {
-                isIntersect = false;
-                tempShip.initShip(); // цикл может стать бесконечным
-                tempShip.isGorizontal();
-                for (int j = 0; j < i; j++) {
-                    if (isIntersectTwoShips(tempShip, ships[j])) {
-                        isIntersect = true;
-                    }
-                }
-            } while (isIntersect);
-            tempShip.serialNumber = i;
-            drawShip(tempShip);
-            ships[i] = tempShip;
-        }
+        return isNotGameOver;
     }
 }
