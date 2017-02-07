@@ -75,7 +75,7 @@ public class Field {
         }
     }
 
-    void doShoot(int shoot2, int shoot) { //вначале перепутал вертикаль с горизонталью, поэтому так
+    void doShoot(int shoot, int shoot2) {
         switch (cells[shoot][shoot2]) {
             case '~':
                 System.out.println("Промах");

@@ -2,19 +2,19 @@ import java.util.Random;
 
 public class Ship {
     int[] position;
-    int size;
+    int size, serialNumber;
     boolean isGorizontal;
-    int serialNumber;
     Random random = new Random();
     int randomLine = random.nextInt(Field.SIZE);
     int[] coordinats = new int[2];
 
     boolean isGorizontal() {
-        if (random.nextInt(2) == 0) {
-            isGorizontal = true;
-        } else {
-            isGorizontal = false;
-        }
+//        if (random.nextInt(2) == 0) {
+//            isGorizontal = true;
+//        } else {
+//            isGorizontal = false;
+//        }
+        isGorizontal = random.nextInt(2) == 0;
         return isGorizontal;
     }
 
@@ -28,11 +28,9 @@ public class Ship {
         }
 
         if (isGorizontal()) {
-            isGorizontal = true;
             coordinats[0] = position[0];
             coordinats[1] = randomLine;
         } else {
-            isGorizontal = false;
             coordinats[0] = randomLine;
             coordinats[1] = position[0];
         }
